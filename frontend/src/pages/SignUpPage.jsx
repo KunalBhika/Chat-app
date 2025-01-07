@@ -5,11 +5,12 @@ import {
   Loader2,
   Lock,
   Mail,
-  MessageSquare,
+  MessageCircleMore,
   User,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore.js";
+import toast from "react-hot-toast";
 
 const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -21,24 +22,34 @@ const SignUpPage = () => {
 
   const { signup, isSigningUp } = useAuthStore();
 
-  const validateForm = () => {};
+  const validateForm = () => {
+    if(!formData.fullName) return toast.error("Full Name is required");
+    if(!formData.email) return toast.error("Email is required");
+    if(!formData.password) return toast.error("Password is required");
+    if(formData.password.length < 6) return toast.error("Password is too short");
+    return true;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    const validateResult = validateForm();
+    if(validateResult === true) signup(formData);
   };
+
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   return (
     <div className="min-h-screen grid lg:grid-col-1">
-      <div className="flex flex-col justify-center items-center p-6 sm:p-12">
-        <div className="w-full max-w-md space-y-8">
+      <div className="flex flex-col my-auto justify-center items-center p-6 sm:p-12">
+        <div className="bg-base-300 rounded-xl p-6 w-full max-w-md space-y-6">
 
           {/* LOGO */}
           <div className="text-center mb-8">
             <div className="flex flex-col items-center gap-2 group">
               <div className="size-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                <MessageSquare className="size-6 text-primary" />
+                <MessageCircleMore className="size-6 text-primary" />
               </div>
               <h1 className="text-2xl font-bold mt-2">Create Account</h1>
               <p className="text-base-content/60">
@@ -63,6 +74,7 @@ const SignUpPage = () => {
                   placeholder="John Doe"
                   value={formData.fullName}
                   onChange={onChange}
+                  name="fullName"
                 />
               </div>
             </div>
@@ -81,6 +93,7 @@ const SignUpPage = () => {
                   placeholder="you@example.com"
                   value={formData.email}
                   onChange={onChange}
+                  name="email"
                 />
               </div>
             </div>
@@ -99,6 +112,7 @@ const SignUpPage = () => {
                   placeholder="••••••••"
                   value={formData.password}
                   onChange={onChange}
+                  name="password"
                 />
                 <button
                   type="button"

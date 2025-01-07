@@ -34,10 +34,10 @@ export const signup = async (req, res) => {
                 profilePic : newUser.profilePic
             });
         }
-        else res.status(400).json({ error : "Invalid user details" });
+        else res.status(400).json({ message : "Invalid user details" });
 
     } catch(error) {
-        res.status(500).json({ error : "Internal server error" });
+        res.status(500).json({ message : "Internal server error" });
     }
 };
 
@@ -45,11 +45,11 @@ export const login = async (req, res) => {
     const { email , password } = req.body;
     try {
         const user = await User.findOne({ email });
-        if(!user) res.status(400).json({ error : "invalid credentials" });
+        if(!user) return res.status(400).json({ message : "Invalid credentials" });
 
         const isPasswordCorrect = bcrypt.compareSync(password , user.password);
 
-        if(!isPasswordCorrect) res.status(400).json({ error : "invalid credentials" });
+        if(!isPasswordCorrect) return res.status(400).json({ message : "Invalid credentials" });
 
         generateToken(user._id , res);
         res.status(200).json({ 
@@ -59,7 +59,7 @@ export const login = async (req, res) => {
             profilePic : user.profilePic
         });
     } catch (error) {
-        res.status(500).json({ error : "internal server error" });  
+        res.status(500).json({ message : "Internal server error" });  
     }
 };
 
@@ -68,7 +68,7 @@ export const logout = (req, res) => {
         res.cookie("jwt" , "" , { maxAge : 0 });
         res.status(200).json({ message : "logged out successfully" });
     } catch (error) {
-        res.status(500).json({ error : "internal server error" });
+        res.status(500).json({ message : "internal server error" });
     }
 };
 
