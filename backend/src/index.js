@@ -12,17 +12,17 @@ const PORT = process.env.PORT;
 
 app.use(cookieParser());
 app.use(express.json());
-app.use(cors( {
-    origin: 'http://localhost:5173', 
-    methods: ['GET', 'POST' , 'PUT'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
-  } ));
+app.use(cors({
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST', 'PUT'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+}));
 
 app.use("/api/auth", authRouter);
 app.use("/api/message", messageRouter);
 
-app.listen(PORT, () => { 
-    console.log("Server Running on PORT : " + PORT) 
-    connectDB();
+app.listen(PORT, () => {
+  console.log("Server Running on PORT : " + PORT)
+  connectDB();
 });
