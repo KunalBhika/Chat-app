@@ -6,15 +6,16 @@ import MessageInput from "./MessageInput.jsx";
 import MessageSkeleton from "./Skeletons/MessageSkeleton.jsx";
 
 const ChatContainer = () => {
-  const { selectedUser, isMessagesLoading, messages, getMessages } =
-    useChatStore();
+  const { selectedUser, isMessagesLoading, messages, getMessages , subscribeToMessages , unsubscribeToMessages } = useChatStore();
 
   const { authUser } = useAuthStore();
   const messageEndRef = useRef(null);
 
   useEffect(() => {
     getMessages(selectedUser._id);
-  }, [selectedUser._id, getMessages]);
+    subscribeToMessages();
+    return () => unsubscribeToMessages();
+  }, [selectedUser._id, getMessages , subscribeToMessages , unsubscribeToMessages]);
 
   const formatTime = (messageSendTime) => {
     const clockPart = messageSendTime.split("T")[1];
