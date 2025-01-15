@@ -2,10 +2,13 @@ import React, { useEffect } from "react";
 import { useChatStore } from "../store/useChatStore.js";
 import SidebarSkeleton from "./Skeletons/SidebarSkeleton.jsx";
 import { Users } from "lucide-react";
+import { useAuthStore } from "../store/useAuthStore.js";
 
 const Sidebar = () => {
-  const { getUsers, users, setSelectedUser, selectedUser, isUsersLoading , onlineUsers } =
+  const { getUsers, users, setSelectedUser, selectedUser, isUsersLoading } =
     useChatStore();
+
+  const { onlineUsers } = useAuthStore();
 
   useEffect(() => {
     getUsers();
@@ -48,7 +51,7 @@ const Sidebar = () => {
               {onlineUsers.includes(user._id) && (
                 <span
                   className="absolute bottom-0 right-0 size-3 bg-green-500 
-                rounded-full ring-2 ring-zinc-900"
+                rounded-full"
                 />
               )}
             </div>
