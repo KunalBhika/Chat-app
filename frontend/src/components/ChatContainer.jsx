@@ -17,6 +17,10 @@ const ChatContainer = () => {
     return () => unsubscribeToMessages();
   }, [selectedUser._id, getMessages , subscribeToMessages , unsubscribeToMessages]);
 
+  useEffect(() => {
+    if(messageEndRef.current && messages) messageEndRef.current.scrollIntoView({behaviour : "smooth"});
+  } , [messages])
+
   const formatTime = (messageSendTime) => {
     const clockPart = messageSendTime.split("T")[1];
     const timePart = clockPart.split(".")[0];
