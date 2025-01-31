@@ -52,7 +52,7 @@ export const sendMessage = async (req, res) => {
 
         await newMessage.save();
 
-        // Real-time socket io functionality goes here : TODO
+        // Real-time socket io functionality
         const receiverSocketId = getReceiverSocketID(receiverId);
         if(receiverSocketId) {
             io.to(receiverSocketId).emit("newMessage" , newMessage);
